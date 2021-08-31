@@ -15,40 +15,35 @@ router.post(`/mail/contact`, async (req, res) => {
   console.log("Using Route : /mail/contact");
   const { from, subject, orderRef, firstName, lastName, text } = req.fields;
 
-  if (
-    from === "" ||
-    subject === "" ||
-    firstName === "" ||
-    lastName === "" ||
-    text === ""
-  ) {
+  if (from && subject && firstName && lastName && text) {
+    if (!isValidMail(from)) {
+      return res.status(400).json({
+        error: languages.en.invalidEmail,
+      });
+    } else {
+      try {
+        const data = {
+          from: `${firstName} ${lastName} <${from}>`,
+          to: "ITRSQ <support@itrsq.com>",
+          subject: `${orderRef && orderRef}  ${subject}`,
+          text: text,
+        };
+        await mailgun.messages().send(data, (error, body) => {
+          if (body.message === "Queued. Thank you.") {
+            res.status(200).json("Email sent!");
+            console.log(body);
+          } else {
+            res.status(400).json({ error: error.message });
+          }
+        });
+      } catch (error) {
+        res.status(400).json({ error: error.message });
+      }
+    }
+  } else {
     return res.status(400).json({
       error: languages.en.missingData,
     });
-  } else if (!isValidMail(from)) {
-    return res.status(400).json({
-      error: languages.en.invalidEmail,
-    });
-  } else {
-    try {
-      const data = {
-        from: `${firstName} ${lastName} <${from}>`,
-        to: "ITRSQ <support@itrsq.com>",
-        subject: `${orderRef && orderRef}  ${subject}`,
-        text: text,
-      };
-      await mailgun.messages().send(data, (error, body) => {
-        if (body.message === "Queued. Thank you.") {
-          res.status(200).json("Email sent!");
-          console.log(body);
-        } else {
-          res.status(400).json({ error: error.message });
-        }
-      });
-      res.json;
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
   }
 });
 
