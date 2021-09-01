@@ -15,12 +15,20 @@ router.post(`/mail/contact`, async (req, res) => {
   console.log("Using Route : /mail/contact");
   const { from, subject, orderRef, firstName, lastName, text } = req.fields;
 
-  if (from && subject && firstName && lastName && text) {
+  if (
+    from !== undefined ||
+    subject !== undefined ||
+    firstName !== undefined ||
+    lastName !== undefined ||
+    text !== undefined
+  ) {
     if (!isValidMail(from)) {
       return res.status(400).json({
         error: languages.en.invalidEmail,
       });
     } else {
+      try {
+      } catch (error) {}
       try {
         const data = {
           from: `${firstName} ${lastName} <${from}>`,
