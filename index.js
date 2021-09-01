@@ -23,8 +23,8 @@ mongoose.connect(process.env.MONGODB_URI, {
 });
 
 // Routes
-const mailRoutes = require("./routes/mails");
-app.use(mailRoutes);
+const mailsRoutes = require("./routes/mails");
+app.use(mailsRoutes);
 const testimonialsRoutes = require("./routes/testimonials");
 app.use(testimonialsRoutes);
 
