@@ -1,5 +1,6 @@
 // Packages
 require("dotenv").config();
+const mongoose = require("mongoose");
 const express = require("express");
 const app = express();
 const formidable = require("express-formidable");
@@ -14,9 +15,18 @@ app.use((req, res, next) => {
   next();
 });
 
+// Database configuration
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+});
+
 // Routes
-const mailRoutes = require("./routes/mail");
+const mailRoutes = require("./routes/mails");
 app.use(mailRoutes);
+const testimonialsRoutes = require("./routes/testimonials");
+app.use(testimonialsRoutes);
 
 app.all("*", function (req, res) {
   res.json({ message: "Page not found" });
