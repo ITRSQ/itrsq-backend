@@ -7,7 +7,7 @@ router.post("/testimonial/create", async (req, res) => {
   try {
     const { author, authorPosition, picture, testimonial } = req.fields;
 
-    const newTestimonial = new Testimonial({
+    const newTestimonial = await new Testimonial({
       author,
       authorPosition,
       picture,
