@@ -1,7 +1,7 @@
 {
     "en":{
         "missingData": "Missing Data",
-        "invalidEmail": "This email is not valid",
+        "invalidEmail": "This email is not valid or does not exist",
         "wrongInput": "Incorrect email and/or password",
         "incomplete" : "Email and/or password inputs missing",
         "emailTaken" : "This email is already in use"
