@@ -26,6 +26,10 @@ const mailsRoutes = require("./routes/mails");
 app.use(mailsRoutes);
 const testimonialsRoutes = require("./routes/testimonials");
 app.use(testimonialsRoutes);
+const tutorialsRoutes = require("./routes/tutorials");
+app.use(tutorialsRoutes);
+const articlesRoutes = require("./routes/articles");
+app.use(articlesRoutes);
 
 app.all("*", function (req, res) {
   res.json({ message: "Page not found" });
