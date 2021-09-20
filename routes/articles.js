@@ -16,13 +16,14 @@ router.get(`/articles`, async (req, res) => {
 router.post("/article/create", async (req, res) => {
   console.log("Using Route : /article/create");
   try {
-    const { author, text, picture, title } = req.fields;
+    const { author, text, picture, title, tags } = req.fields;
 
     const newArticle = await new Article({
       author,
       text,
       picture,
       title,
+      tags,
     });
     newArticle.save();
     res.status(200).json({
