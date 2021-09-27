@@ -26,6 +26,10 @@ router.post("/users/signup", formidable(), async (req, res) => {
     return res.status(400).json({
       error: languages.en.incomplete,
     });
+  } else if (password !== confirmPassword) {
+    return res.status(400).json({
+      error: languages.en.confirmPassword,
+    });
   } else {
     const isUser = await User.findOne({ email });
     if (isUser) {
