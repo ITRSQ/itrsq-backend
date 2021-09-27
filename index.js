@@ -30,6 +30,8 @@ const tutorialsRoutes = require("./routes/tutorials");
 app.use(tutorialsRoutes);
 const articlesRoutes = require("./routes/articles");
 app.use(articlesRoutes);
+const usersRoutes = require("./routes/users");
+app.use(usersRoutes);
 
 app.all("*", function (req, res) {
   res.json({ message: "Page not found" });
