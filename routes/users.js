@@ -98,9 +98,10 @@ router.post("/users/login", formidable(), async (req, res) => {
   }
 });
 
-router.get("/user/account", isAuthenticated, async (req, res) => {
+router.post("/user/account", isAuthenticated, async (req, res) => {
   try {
-    const user = await User.findById(req.user._id, "email account");
+    console.log(req.fields._id);
+    const user = await User.findById(req.fields._id);
     res.status(200).json(user);
   } catch (error) {
     res.status(400).json({ error: "Unknown Error" });
