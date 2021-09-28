@@ -100,11 +100,68 @@ router.post("/users/login", formidable(), async (req, res) => {
 
 router.post("/user/account", isAuthenticated, async (req, res) => {
   try {
-    console.log(req.fields._id);
     const user = await User.findById(req.fields._id);
     res.status(200).json(user);
   } catch (error) {
     res.status(400).json({ error: "Unknown Error" });
+  }
+});
+
+router.post("/user/modify/email", isAuthenticated, async (req, res) => {
+  const { email, _id } = req.fields;
+  const isUser = await User.findOne({ email });
+  if (isUser) {
+    return res.status(400).json({
+      error: languages.en.emailTaken,
+    });
+  }
+  try {
+    const response = await axios.get(
+      `https://emailvalidation.abstractapi.com/v1/?api_key=${process.env.ABSTRACT_API_KEY}&email=${email}`
+    );
+    if (
+      response.data.deliverability === "DELIVERABLE" &&
+      response.data.is_valid_format
+    ) {
+      try {
+        const user = await User.findById(_id);
+        user.email = email;
+        await user.save();
+        res.status(200).json("Email Changed");
+      } catch (error) {
+        res.json({ error: error.message });
+      }
+    } else {
+      res.status(400).json({ error: languages.en.invalidEmail });
+    }
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
+
+router.post("/user/modify/password", isAuthenticated, async (req, res) => {
+  const { password, confirmPassword, _id } = req.fields;
+  const salt = uid2(16);
+  const hash = SHA256(password + salt).toString(encBase64);
+  const token = uid2(32);
+  if (!password || !confirmPassword) {
+    return res.status(400).json({
+      error: languages.en.missingData,
+    });
+  } else if (password !== confirmPassword) {
+    return res.status(400).json({
+      error: languages.en.confirmPassword,
+    });
+  }
+  try {
+    const user = await User.findById(_id);
+    user.token = token;
+    user.hash = hash;
+    user.salt = salt;
+    await user.save();
+    res.status(200).json("Password Changed");
+  } catch (error) {
+    res.json({ error: error.message });
   }
 });
 
