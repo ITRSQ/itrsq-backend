@@ -16,6 +16,7 @@ const isValidMail = (mail) => {
 };
 
 router.post("/users/signup", formidable(), async (req, res) => {
+  console.log("Using Route : /users/signup");
   const { email, password, confirmPassword } = req.fields;
 
   const salt = uid2(16);
@@ -68,6 +69,7 @@ router.post("/users/signup", formidable(), async (req, res) => {
 });
 
 router.post("/users/login", formidable(), async (req, res) => {
+  console.log("Using Route : /users/login");
   const { email, password } = req.fields;
 
   if (!email || !password) {
@@ -99,6 +101,7 @@ router.post("/users/login", formidable(), async (req, res) => {
 });
 
 router.post("/user/account", isAuthenticated, async (req, res) => {
+  console.log("Using Route : /users/account");
   try {
     const user = await User.findById(req.fields._id);
     res.status(200).json(user);
@@ -108,6 +111,7 @@ router.post("/user/account", isAuthenticated, async (req, res) => {
 });
 
 router.post("/user/modify/email", isAuthenticated, async (req, res) => {
+  console.log("Using Route : /users/modify/email");
   const { email, _id } = req.fields;
   const isUser = await User.findOne({ email });
   if (isUser) {
@@ -140,6 +144,7 @@ router.post("/user/modify/email", isAuthenticated, async (req, res) => {
 });
 
 router.post("/user/modify/password", isAuthenticated, async (req, res) => {
+  console.log("Using Route : /users/modify/password");
   const { password, confirmPassword, _id } = req.fields;
   const salt = uid2(16);
   const hash = SHA256(password + salt).toString(encBase64);
