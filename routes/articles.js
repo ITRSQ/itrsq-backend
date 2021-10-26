@@ -22,10 +22,12 @@ router.get(`/articles`, async (req, res) => {
 
 router.post("/article/create", async (req, res) => {
   console.log("Using Route : /article/create");
+  console.log(req.fields.author);
   try {
     let newPicture = "";
     const { author, text, title, tags } = req.fields;
     const picture = req.files.picture.path;
+
     const result = await cloudinary.uploader.upload(picture, {
       folder: "/articles",
     });

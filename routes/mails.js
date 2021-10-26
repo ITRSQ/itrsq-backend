@@ -12,10 +12,10 @@ router.post(`/mail/contact`, async (req, res) => {
   const { from, subject, orderRef, firstName, lastName, text } = req.fields;
 
   if (
-    from !== undefined ||
-    subject !== undefined ||
-    firstName !== undefined ||
-    lastName !== undefined ||
+    from !== undefined &&
+    subject !== undefined &&
+    firstName !== undefined &&
+    lastName !== undefined &&
     text !== undefined
   ) {
     try {
