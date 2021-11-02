@@ -17,7 +17,7 @@ const isValidMail = (mail) => {
 
 router.post("/users/signup", formidable(), async (req, res) => {
   console.log("Using Route : /users/signup");
-  const { email, password, confirmPassword } = req.fields;
+  const { email, password, confirmPassword, newsletter } = req.fields;
 
   const salt = uid2(16);
   const hash = SHA256(password + salt).toString(encBase64);
@@ -51,6 +51,7 @@ router.post("/users/signup", formidable(), async (req, res) => {
             token,
             hash,
             salt,
+            newsletter,
           });
 
           await newUser.save();
