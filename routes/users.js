@@ -171,4 +171,20 @@ router.post("/user/modify/password", isAuthenticated, async (req, res) => {
   }
 });
 
+router.get(`/users/newsletter`, async (req, res) => {
+  console.log("Using Route : /users/newsletter");
+  try {
+    const filteredUsers = [];
+    const users = await User.find();
+    for (let i = 0; i < users.length; i++) {
+      if (users[i].newsletter === true) {
+        filteredUsers.push(users[i].email);
+      }
+    }
+    res.status(200).json(filteredUsers);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 module.exports = router;
