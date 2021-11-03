@@ -20,6 +20,17 @@ router.get(`/articles`, async (req, res) => {
   }
 });
 
+router.get(`/article/:id`, async (req, res) => {
+  console.log("Using Route : /articles");
+  console.log(req.query);
+  try {
+    const articles = await Article.findById(req.params.id);
+    res.status(200).json(articles);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 router.post("/article/create", async (req, res) => {
   console.log("Using Route : /article/create");
   console.log(req.fields.author);
