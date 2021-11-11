@@ -39,6 +39,20 @@ router.post("/project/create", async (req, res) => {
   }
 });
 
+router.post("/project/update/:projectId", async (req, res) => {
+  console.log("Using Route : /project/update/:projectId");
+  try {
+    const { progress } = req.fields;
+
+    const project = await Project.findById(req.params.projectId);
+    project.progress = progress;
+    project.save();
+    res.status(200).json(project);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 router.get(`/projects/:clientId`, async (req, res) => {
   console.log("Using Route : /projects/:clientId");
   console.log(req.params.clientId);
@@ -61,6 +75,18 @@ router.get(`/projects/:clientId`, async (req, res) => {
       }
       res.status(200).json(newProjects);
     }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+router.get(`/project/:projectId`, async (req, res) => {
+  console.log("Using Route : /project/:projectId");
+
+  try {
+    const project = await Project.findById(req.params.projectId);
+
+    res.status(200).json(project);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

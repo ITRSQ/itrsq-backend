@@ -8,7 +8,7 @@ const Project = mongoose.model("Project", {
     firstName: String,
     lastName: String,
   },
-
+  progress: Array,
   type: String,
   refNumber: String,
   title: String,
