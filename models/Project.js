@@ -12,6 +12,7 @@ const Project = mongoose.model("Project", {
   type: String,
   refNumber: String,
   title: String,
+  preview: String,
 });
 
 module.exports = Project;

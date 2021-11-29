@@ -61,4 +61,49 @@ router.post("/article/create", async (req, res) => {
   }
 });
 
+router.put("/article/update", async (req, res) => {
+  console.log("Using Route : /article/update");
+  const urlCheck = /^((http|https|ftp):\/\/)/;
+  try {
+    let newPicture = "";
+    const { author, text, title, tags, id } = req.fields;
+    const article = await Article.findById(id);
+    const picture = req.files.picture
+      ? req.files.picture.path
+      : req.fields.picture;
+    if (!urlCheck.test(picture)) {
+      const result = await cloudinary.uploader.upload(picture, {
+        folder: "/articles",
+      });
+      newPicture = result.url;
+    } else {
+      newPicture = picture;
+    }
+    article.author = author;
+    article.text = text;
+    article.title = title;
+    article.tags = tags;
+    article.picture = newPicture;
+    await article.save();
+    res.status(200).json(article);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+router.post("/article/delete", async (req, res) => {
+  console.log("Using Route : /article/delete");
+  try {
+    await Article.findByIdAndDelete(req.fields.id);
+    const article = await Article.findById(req.fields.id);
+    if (article) {
+      res.status(400).json("There has been a problem");
+    } else {
+      res.status(200).json("Article Deleted");
+    }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 module.exports = router;
