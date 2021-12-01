@@ -18,13 +18,15 @@ router.post(`/tools/email`, async (req, res) => {
       ) {
         res.status(200).json("This email is valid !");
       } else {
-        res.status(400).json(languages.en.invalidEmail);
+        res.status(400).json({ error: languages.en.invalidEmail });
       }
     } catch (error) {
-      res.status(400).json(languages.en.invalidEmail);
+      res.status(400).json({ error: languages.en.invalidEmail });
     }
   } else {
-    return res.status(400).json(languages.en.missingData);
+    return res.status(400).json({
+      error: languages.en.missingData,
+    });
   }
 });
 
@@ -40,13 +42,15 @@ router.post(`/tools/phone`, async (req, res) => {
       if (response.data.valid === true) {
         res.status(200).json("This phone number is valid !");
       } else {
-        res.status(400).json(languages.en.invalidPhone);
+        res.status(400).json({ error: languages.en.invalidPhone });
       }
     } catch (error) {
-      res.status(400).json(languages.en.invalidPhone);
+      res.status(400).json({ error: languages.en.invalidPhone });
     }
   } else {
-    return res.status(400).json(languages.en.missingData);
+    return res.status(400).json({
+      error: languages.en.missingData,
+    });
   }
 });
 
@@ -62,13 +66,15 @@ router.post(`/tools/vat`, async (req, res) => {
       if (response.data.valid === true) {
         res.status(200).json("This VAT number is valid !");
       } else {
-        res.status(400).json(languages.en.invalidVat);
+        res.status(400).json({ error: languages.en.invalidVat });
       }
     } catch (error) {
-      res.status(400).json(languages.en.invalidVat);
+      res.status(400).json({ error: languages.en.invalidVat });
     }
   } else {
-    return res.status(400).json(languages.en.missingData);
+    return res.status(400).json({
+      error: languages.en.missingData,
+    });
   }
 });
 
