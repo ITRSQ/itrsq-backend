@@ -5,7 +5,8 @@
         "wrongInput": "Incorrect email and/or password",
         "incomplete" : "Email and/or password missing",
         "emailTaken" : "This email is already in use",
-        "confirmPassword": "Passwords must be identical"
-    
+        "confirmPassword": "Passwords must be identical",
+        "invalidPhone": "This phone number is not valid or does not exist",
+        "invalidVat": "This VAT number is not valid or does not exist"
         
     }}

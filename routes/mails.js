@@ -20,7 +20,7 @@ router.post(`/mail/contact`, async (req, res) => {
   ) {
     try {
       const response = await axios.get(
-        `https://emailvalidation.abstractapi.com/v1/?api_key=${process.env.ABSTRACT_API_KEY}&email=${from}`
+        `https://emailvalidation.abstractapi.com/v1/?api_key=${process.env.ABSTRACT_API_KEY_MAIL}&email=${from}`
       );
       if (
         response.data.deliverability === "DELIVERABLE" &&

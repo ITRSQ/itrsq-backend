@@ -34,6 +34,8 @@ const usersRoutes = require("./routes/users");
 app.use(usersRoutes);
 const projectsRoutes = require("./routes/projects");
 app.use(projectsRoutes);
+const toolsRoutes = require("./routes/tools");
+app.use(toolsRoutes);
 
 app.all("*", function (req, res) {
   res.json({ message: "Page not found" });
