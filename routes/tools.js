@@ -84,10 +84,9 @@ router.post(`/tools/vat`, async (req, res) => {
 router.post(`/tools/url`, async (req, res) => {
   console.log(`Using route : /tools/url`);
   const { longUrl } = req.fields;
+  console.log(longUrl);
   const baseUrl = "https://itrsq.herokuapp.com";
-  if (!validUrl.isUri(baseUrl)) {
-    return res.status(401).json("Invalid base URL");
-  }
+
   const urlCode = shortid.generate();
   if (validUrl.isUri(longUrl)) {
     try {
