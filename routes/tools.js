@@ -96,7 +96,7 @@ router.post(`/tools/url`, async (req, res) => {
       });
 
       if (url) {
-        res.json(url.shortUrl);
+        res.json(url);
       } else {
         const shortUrl = baseUrl + "/" + urlCode;
 
