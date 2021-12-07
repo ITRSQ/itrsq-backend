@@ -107,7 +107,7 @@ router.post(`/tools/url`, async (req, res) => {
           date: new Date(),
         });
         await url.save();
-        res.json(url.shortUrl);
+        res.json(url);
       }
     } catch (err) {
       console.log(err);
