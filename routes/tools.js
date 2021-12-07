@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const languages = require("../lang/errorMessages.json");
 const axios = require("axios");
+const validUrl = require("valid-url");
+const shortid = require("shortid");
+const Url = require("../models/Url");
 
 router.post(`/tools/email`, async (req, res) => {
   console.log("Using Route : /tools/email");
@@ -75,6 +78,59 @@ router.post(`/tools/vat`, async (req, res) => {
     return res.status(400).json({
       error: languages.en.missingData,
     });
+  }
+});
+
+router.post(`/tools/url`, async (req, res) => {
+  console.log(`Using route : /tools/url`);
+  const { longUrl } = req.fields;
+  const baseUrl = "https://itrsq.herokuapp.com";
+  if (!validUrl.isUri(baseUrl)) {
+    return res.status(401).json("Invalid base URL");
+  }
+  const urlCode = shortid.generate();
+  if (validUrl.isUri(longUrl)) {
+    try {
+      let url = await Url.findOne({
+        longUrl,
+      });
+
+      if (url) {
+        res.json(url.shortUrl);
+      } else {
+        const shortUrl = baseUrl + "/" + urlCode;
+
+        url = new Url({
+          longUrl,
+          shortUrl,
+          urlCode,
+          date: new Date(),
+        });
+        await url.save();
+        res.json(url.shortUrl);
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).json("Server Error");
+    }
+  } else {
+    res.status(401).json("Invalid longUrl");
+  }
+});
+
+router.get("/:code", async (req, res) => {
+  try {
+    const url = await Url.findOne({
+      urlCode: req.params.code,
+    });
+    if (url) {
+      return res.redirect(url.longUrl);
+    } else {
+      return res.status(404).json("No URL Found");
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json("Server Error");
   }
 });
 
