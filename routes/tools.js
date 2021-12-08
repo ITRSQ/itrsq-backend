@@ -17,11 +17,11 @@ router.post(`/tools/email`, async (req, res) => {
       );
       if (
         response.data.deliverability === "DELIVERABLE" &&
-        response.data.is_valid_format
+        response.data.is_valid_format.value === true
       ) {
         res.status(200).json("This email is valid !");
       } else {
-        res.status(500).json({ error: "Server Error" });
+        res.status(500).json({ error: languages.en.invalidEmail });
       }
     } catch (error) {
       res.status(500).json({ error: languages.en.invalidEmail });
