@@ -21,10 +21,10 @@ router.post(`/tools/email`, async (req, res) => {
       ) {
         res.status(200).json("This email is valid !");
       } else {
-        res.status(400).json({ error: languages.en.invalidEmail });
+        res.status(500).json({ error: "Server Error" });
       }
     } catch (error) {
-      res.status(400).json({ error: languages.en.invalidEmail });
+      res.status(500).json({ error: languages.en.invalidEmail });
     }
   } else {
     return res.status(400).json({
