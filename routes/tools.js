@@ -15,9 +15,12 @@ router.post(`/tools/email`, async (req, res) => {
       const response = await axios.get(
         `https://emailvalidation.abstractapi.com/v1/?api_key=${process.env.ABSTRACT_API_KEY_MAIL}&email=${email}`
       );
+      console.log(response.data);
       if (
-        response.data.deliverability === "DELIVERABLE" &&
-        response.data.is_valid_format.value === true
+        // (response.data.deliverability === "DELIVERABLE" ||
+        //   response.data.deliverability === "UNKOWN") &&
+        // response.data.is_valid_format.value === true
+        response.data.quality_score > 0.5
       ) {
         res.status(200).json("This email is valid !");
       } else {
