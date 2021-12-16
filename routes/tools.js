@@ -5,6 +5,8 @@ const axios = require("axios");
 const validUrl = require("valid-url");
 const shortid = require("shortid");
 const Url = require("../models/Url");
+const FormData = require("form-data");
+var fs = require("fs");
 
 router.post(`/tools/email`, async (req, res) => {
   console.log("Using Route : /tools/email");
@@ -132,6 +134,17 @@ router.get("/:code", async (req, res) => {
     }
   } catch (err) {
     console.error(err);
+    res.status(500).json("Server Error");
+  }
+});
+
+router.post("/tools/image", async (req, res) => {
+  const image = req.files.image.path;
+
+  try {
+    res.status(200).json(image);
+  } catch (error) {
+    console.log(error);
     res.status(500).json("Server Error");
   }
 });
