@@ -6,7 +6,7 @@ const validUrl = require("valid-url");
 const shortid = require("shortid");
 const Url = require("../models/Url");
 const FormData = require("form-data");
-var fs = require("fs");
+const fs = require("fs");
 
 router.post(`/tools/email`, async (req, res) => {
   console.log("Using Route : /tools/email");
@@ -139,10 +139,49 @@ router.get("/:code", async (req, res) => {
 });
 
 router.post("/tools/image", async (req, res) => {
-  const image = req.files.image.path;
+  console.log(`Using route : /tools/image`);
+
+  const image = fs.createReadStream(req.files.image.path);
+  const { width, height, strategy } = req.fields;
+
+  const data = JSON.stringify({
+    api_key: process.env.ABSTRACT_API_KEY_IMAGE,
+    lossy: true,
+    resize: {
+      height: parseInt(height, 10),
+      width: parseInt(width, 10),
+      strategy,
+    },
+  });
 
   try {
-    res.status(200).json(image);
+    console.log(data);
+    console.log(image);
+    const formData = new FormData();
+    formData.append("image", image);
+    formData.append("data", data);
+    const response = await axios.post(
+      "https://images.abstractapi.com/v1/upload/",
+      formData,
+      {
+        headers: formData.getHeaders(),
+      }
+    );
+    res.status(200).json(response.data.url);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json("Server Error");
+  }
+});
+
+router.post("/tools/hashtag/text", async (req, res) => {
+  console.log(`Using route : /tools/hashtag`);
+  const { text } = req.fields;
+  try {
+    const response = await axios.get(
+      `https://api.ritekit.com/v1/stats/hashtag-suggestions?text=${text}&client_id=${process.env.RITEKIT_API_KEY}`
+    );
+    res.status(200).json(response.data);
   } catch (error) {
     console.log(error);
     res.status(500).json("Server Error");
