@@ -42,7 +42,7 @@ router.post("/article/create", async (req, res) => {
     const result = await cloudinary.uploader.upload(picture, {
       folder: "/articles",
     });
-    newPicture = result.url;
+    newPicture = result.secure_url;
 
     const newArticle = await new Article({
       author,
@@ -75,7 +75,7 @@ router.put("/article/update", async (req, res) => {
       const result = await cloudinary.uploader.upload(picture, {
         folder: "/articles",
       });
-      newPicture = result.url;
+      newPicture = result.secure_url;
     } else {
       newPicture = picture;
     }
