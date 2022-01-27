@@ -51,6 +51,7 @@ router.post("/article/create", async (req, res) => {
       title,
       tags,
       date: Date().toLocaleString(),
+      likes: 0,
     });
     newArticle.save();
     res.status(200).json({
@@ -86,6 +87,38 @@ router.put("/article/update", async (req, res) => {
     article.tags = tags;
     article.picture = newPicture;
     await article.save();
+    res.status(200).json(article);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+router.put("/article/like", async (req, res) => {
+  console.log("Using Route : /article/like");
+
+  try {
+    const { id } = req.fields;
+    const article = await Article.findById(id);
+    article.likes = article.likes + 1;
+    await article.save();
+    res.status(200).json(article);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+router.put("/article/unlike", async (req, res) => {
+  console.log("Using Route : /article/unlike");
+
+  try {
+    const { id } = req.fields;
+    const article = await Article.findById(id);
+    if (article.likes === 0) {
+      await article.save();
+    } else {
+      article.likes = article.likes - 1;
+      await article.save();
+    }
     res.status(200).json(article);
   } catch (error) {
     res.status(400).json({ error: error.message });

@@ -9,6 +9,7 @@ const Article = mongoose.model("Article", {
   title: String,
   tags: Array,
   date: String,
+  likes: Number,
 });
 
 module.exports = Article;
