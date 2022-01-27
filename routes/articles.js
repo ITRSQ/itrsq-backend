@@ -50,6 +50,7 @@ router.post("/article/create", async (req, res) => {
       picture: newPicture,
       title,
       tags,
+      date: Date().toLocaleString(),
     });
     newArticle.save();
     res.status(200).json({
